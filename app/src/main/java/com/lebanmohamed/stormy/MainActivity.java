@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         alertUserError();
 
                     } catch (JSONException e) {
+                        //Toast.makeText(this, "Couldn't get the JSONObject Data", Toast.LENGTH_SHORT);
 
                     }
 
