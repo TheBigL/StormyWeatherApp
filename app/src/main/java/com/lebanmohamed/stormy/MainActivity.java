@@ -5,7 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -29,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Setting the Link and activating it.
+        TextView darkSkyAttribution = findViewById(R.id.darkSkyAttribution);
+        darkSkyAttribution.setMovementMethod(LinkMovementMethod.getInstance());
 
         String apiKey = "23e4048bbc3f485cd62e9933f3c93e6c";
 
