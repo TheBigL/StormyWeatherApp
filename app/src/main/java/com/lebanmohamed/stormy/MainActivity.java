@@ -10,6 +10,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,11 +32,21 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "TAG";
     CurrentWeather currentWeather;
+    double latitude = 53.631611;
+    double longitude = -113.323975;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getForecast(latitude, longitude);
+
+
+
+
+    }
+
+    private void getForecast(double latitude, double longitude) {
         final ActivityMainBinding binding = DataBindingUtil.setContentView(MainActivity.this, R.layout.activity_main);
 
 
@@ -49,11 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
         String apiKey = "23e4048bbc3f485cd62e9933f3c93e6c";
 
-        double latitude = 53.631611;
-        double longitude = -113.323975;
+
 
         //Getting the String URL
-        String URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + ", " + longitude;
+        String URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + "," + longitude;
 
         if(isNetworkAvailable()) {
 
@@ -117,10 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
-
-
-
     }
 
     private CurrentWeather getCurrentDetails(String jsonData) throws JSONException {
@@ -170,6 +176,14 @@ public class MainActivity extends AppCompatActivity {
         AlertDialogFragment dialog = new AlertDialogFragment();
         dialog.show(getFragmentManager(), "error_dialog");
 
+
+    }
+
+    public void refreshOnClick(View view)
+    {
+        Toast.makeText(this, "Refreshing Info", Toast.LENGTH_SHORT).show();
+        getForecast(latitude, longitude);
+        Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
 
     }
 }
