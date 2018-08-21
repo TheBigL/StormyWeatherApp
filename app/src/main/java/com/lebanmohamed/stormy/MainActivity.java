@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -19,6 +22,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "TAG";
+    CurrentWeather currentWeather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         double longitude = -113.323975;
 
         //Getting the String URL
-        String URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + ", " + -longitude;
+        String URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + ", " + longitude;
 
         if(isNetworkAvailable()) {
 
@@ -49,15 +53,18 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
+                public void onResponse(Call call, Response response) {
                     try {
+                        String JSONdata = response.body().string();
                         if (response.isSuccessful()) {
-                            Log.v(TAG, response.body().string());
+                            currentWeather = getCurrentDetails(JSONdata);
                         }
 
                     } catch (IOException e) {
                         Log.e(TAG, "Exception Caught:", e);
                         alertUserError();
+
+                    } catch (JSONException e) {
 
                     }
 
@@ -68,6 +75,27 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    private CurrentWeather getCurrentDetails(String jsonData) throws JSONException {
+        JSONObject forecast = new JSONObject(jsonData);
+
+        String timezone = forecast.getString("timezone");
+        Log.i(TAG, "JSON Data: " + timezone);
+
+        JSONObject currently = forecast.getJSONObject("currently");
+        CurrentWeather currentWeather = new CurrentWeather();
+
+        currentWeather.setHumidity(currently.getDouble("humidity"));
+        currentWeather.setTime(currently.getLong("time"));
+        currentWeather.setIcon(currently.getString("icon"));
+        currentWeather.setLocationLabel(currently.getString("Edmonton, AB"));
+        currentWeather.setPrecipChance(currently.getDouble("precipProbability"));
+        currentWeather.setSummary(currently.getString("summary"));
+        currentWeather.setTimezone(timezone);
+
+        return currentWeather;
 
     }
 
