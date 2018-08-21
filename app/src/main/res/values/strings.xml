@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Stormy</string>
+    <string name="error_title">Oh noes!!1</string>
+    <string name="error_message">Your weather information is in another castle!</string>
+    <string name="error_button_ok_text">Got it!</string>
+    <string name="network_not_available_message">Sorry, but your network is in another castle!</string>
+</resources>
