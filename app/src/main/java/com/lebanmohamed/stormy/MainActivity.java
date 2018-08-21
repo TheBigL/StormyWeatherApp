@@ -1,14 +1,20 @@
 package com.lebanmohamed.stormy;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.lebanmohamed.stormy.databinding.ActivityMainBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,11 +36,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        final ActivityMainBinding binding = DataBindingUtil.setContentView(MainActivity.this, R.layout.activity_main);
+
+
+        final ImageView iconImageView;
 
         //Setting the Link and activating it.
         TextView darkSkyAttribution = findViewById(R.id.darkSkyAttribution);
         darkSkyAttribution.setMovementMethod(LinkMovementMethod.getInstance());
+
+        iconImageView = findViewById(R.id.iconImageView);
 
         String apiKey = "23e4048bbc3f485cd62e9933f3c93e6c";
 
@@ -64,6 +75,33 @@ public class MainActivity extends AppCompatActivity {
                         String JSONdata = response.body().string();
                         if (response.isSuccessful()) {
                             currentWeather = getCurrentDetails(JSONdata);
+
+                            final CurrentWeather displayWeather = new CurrentWeather
+                                    (
+                                            currentWeather.getLocationLabel(),
+                                            currentWeather.getIcon(),
+                                            currentWeather.getTime(),
+                                            currentWeather.getTemperature(),
+                                            currentWeather.getHumidity(),
+                                            currentWeather.getPrecipChance(),
+                                            currentWeather.getSummary(),
+                                            currentWeather.getTimezone()
+                                    );
+
+
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run()
+                                {
+                                    Drawable drawable = ResourcesCompat.getDrawable(getResources(), currentWeather.getIconByID(), null);
+
+                                    iconImageView.setImageDrawable(drawable);
+
+                                }
+                            });
+
+
                         }
 
                     } catch (IOException e) {
@@ -89,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         JSONObject forecast = new JSONObject(jsonData);
 
         String timezone = forecast.getString("timezone");
-        Log.i(TAG, "JSON Data: " + timezone);
+        Log.i(TAG, "JSON Data: " + jsonData);
 
         JSONObject currently = forecast.getJSONObject("currently");
         CurrentWeather currentWeather = new CurrentWeather();
@@ -99,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         currentWeather.setIcon(currently.getString("icon"));
         currentWeather.setLocationLabel(currently.getString("Edmonton, AB"));
         currentWeather.setPrecipChance(currently.getDouble("precipProbability"));
+        currentWeather.setIcon("icon");
         currentWeather.setSummary(currently.getString("summary"));
         currentWeather.setTimezone(timezone);
 

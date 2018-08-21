@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="weather"
+            type="com.lebanmohamed.stormy.CurrentWeather"/>
+    </data>
+<android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
@@ -14,7 +21,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="At 12:00 PM it will be"
+        android:text="@{`At ` + String.valueOf(weather.formattedTime) + ` it will be`, default= `At 12:00 PM It will be`}"
         android:textColor="@color/half_white"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/temperatureValue"
@@ -34,7 +41,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="100"
+        android:text="@{String.valueOf(weather.temperature), default=`34`}"
         android:textColor="@android:color/white"
         android:textSize="150sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,14 +64,15 @@
         android:id="@+id/locationValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Edmonton, AB"
+        android:text="@{weather.locationLabel, default=`Edmonton, AB`}"
         android:textColor="@color/half_white"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/timeValue"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
@@ -112,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="0.88"
+        android:text="@{String.valueOf(weather.humidity)}"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/humidityLabel"
@@ -138,7 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text="@{String.valueOf(weather.precipChance)}"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/precipLabel"
@@ -152,7 +160,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="It will cloudy with a chance of meatballs"
+        android:text="@{weather.summary}"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -173,4 +181,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/summaryValue" />
 
+    <ImageView
+        android:id="@+id/refreshImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/locationValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/refresh" />
+
 </android.support.constraint.ConstraintLayout>
+</layout>
