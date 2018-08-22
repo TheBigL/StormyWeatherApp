@@ -74,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
             call.enqueue(new Callback() {
                 @Override
-                public void onFailure(Call call, IOException e) {
+                public void onFailure(Call call, IOException e)
+                {
+                    e.printStackTrace();
 
 
                 }
@@ -116,12 +118,12 @@ public class MainActivity extends AppCompatActivity {
 
                         }
 
-                    } catch (IOException e) {
-                        Log.e(TAG, "Exception Caught:", e);
+                    } catch (IOException e)
+                    {
                         alertUserError();
 
                     } catch (JSONException e) {
-                        //Toast.makeText(this, "Couldn't get the JSONObject Data", Toast.LENGTH_SHORT).show();
+                        alertUserError();
 
                     }
 
