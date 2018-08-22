@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         alertUserError();
 
                     } catch (JSONException e) {
-                        //Toast.makeText(this, "Couldn't get the JSONObject Data", Toast.LENGTH_SHORT);
+                        //Toast.makeText(this, "Couldn't get the JSONObject Data", Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private CurrentWeather getCurrentDetails(String jsonData) throws JSONException {
-        JSONObject forecast = new JSONObject(jsonData);
+        JSONObject forecast = new JSONObject("currently");
 
         String timezone = forecast.getString("timezone");
         Log.i(TAG, "JSON Data: " + jsonData);
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshOnClick(View view)
     {
-        Toast.makeText(this, "Refreshing Info", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Refreshing Info...", Toast.LENGTH_SHORT).show();
         getForecast(latitude, longitude);
         Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
 
