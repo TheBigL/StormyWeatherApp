@@ -6,13 +6,13 @@
     <data>
         <variable
             name="weather"
-            type="com.lebanmohamed.stormy.CurrentWeather"/>
+            type="com.lebanmohamed.stormy.weather.Current"/>
     </data>
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <TextView
         android:id="@+id/timeValue"

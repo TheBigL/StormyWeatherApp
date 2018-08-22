@@ -1,10 +1,12 @@
-package com.lebanmohamed.stormy;
+package com.lebanmohamed.stormy.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
+
+import com.lebanmohamed.stormy.R;
 
 public class AlertDialogFragment extends DialogFragment
 {
