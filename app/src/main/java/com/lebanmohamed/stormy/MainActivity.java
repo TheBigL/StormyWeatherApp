@@ -98,11 +98,13 @@ public class MainActivity extends AppCompatActivity {
                                             currentWeather.getTimezone()
                                     );
 
+                            binding.setWeather(currentWeather);
+                            iconImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), displayWeather.getIconByID(), null));
 
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run()
+                           runOnUiThread(new Runnable()
+                           {
+                               @Override
+                               public void run()
                                 {
                                     Drawable drawable = ResourcesCompat.getDrawable(getResources(), currentWeather.getIconByID(), null);
 
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private CurrentWeather getCurrentDetails(String jsonData) throws JSONException {
-        JSONObject forecast = new JSONObject("currently");
+        JSONObject forecast = new JSONObject(jsonData);
 
         String timezone = forecast.getString("timezone");
         Log.i(TAG, "JSON Data: " + jsonData);
@@ -138,13 +140,13 @@ public class MainActivity extends AppCompatActivity {
         JSONObject currently = forecast.getJSONObject("currently");
         CurrentWeather currentWeather = new CurrentWeather();
 
-        currentWeather.setHumidity(currently.getDouble("humidity"));
+        currentWeather.setHumidity(currently.getDouble("humidity") * 100);
         currentWeather.setTime(currently.getLong("time"));
         currentWeather.setIcon(currently.getString("icon"));
-        currentWeather.setLocationLabel(currently.getString("Edmonton, AB"));
-        currentWeather.setPrecipChance(currently.getDouble("precipProbability"));
-        currentWeather.setIcon("icon");
+        currentWeather.setLocationLabel("Edmonton, AB");
+        currentWeather.setPrecipChance(currently.getDouble("precipProbability") * 100);
         currentWeather.setSummary(currently.getString("summary"));
+        currentWeather.setTemperature(Math.round(currently.getDouble("temperature")));
         currentWeather.setTimezone(timezone);
 
         return currentWeather;

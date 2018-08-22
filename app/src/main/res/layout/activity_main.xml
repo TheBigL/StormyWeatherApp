@@ -26,12 +26,11 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/temperatureValue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.909" />
+        app:layout_constraintVertical_bias="0.906" />
 
     <TextView
         android:id="@+id/temperatureValue"
@@ -41,21 +40,21 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@{String.valueOf(weather.temperature), default=`34`}"
+        android:text="@{String.valueOf(Math.round(weather.temperature)), default=`34`}"
         android:textColor="@android:color/white"
         android:textSize="150sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.386" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/degreeImageView"
         android:layout_width="34dp"
         android:layout_height="37dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toEndOf="@+id/temperatureValue"
         app:layout_constraintTop_toTopOf="@+id/temperatureValue"
         app:srcCompat="@drawable/degree" />
@@ -64,7 +63,7 @@
         android:id="@+id/locationValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@{weather.locationLabel, default=`Edmonton, AB`}"
@@ -79,6 +78,7 @@
         android:id="@+id/iconImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
         android:layout_marginStart="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/locationValue"
         app:layout_constraintEnd_toStartOf="@+id/locationValue"
@@ -106,11 +106,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:paddingTop="15dp"
         android:text="Humidity"
         android:textColor="@color/half_white"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/temperatureValue" />
 
@@ -120,7 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="@{String.valueOf(weather.humidity)}"
+        android:text="@{String.valueOf(Math.round(weather.humidity)) + `%`}"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/humidityLabel"
@@ -132,12 +133,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
         android:paddingTop="15dp"
         android:text="Rain/Snow"
         android:textColor="@color/half_white"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.426"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/temperatureValue" />
 
@@ -146,7 +147,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@{String.valueOf(weather.precipChance)}"
+        android:text="@{String.valueOf(weather.precipChance * 100)}"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/precipLabel"
@@ -170,16 +171,18 @@
         android:id="@+id/darkSkyAttribution"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/dark_sky_message"
         android:textColor="@android:color/white"
+        android:textColorLink="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/summaryValue" />
+        app:layout_constraintTop_toBottomOf="@+id/summaryValue"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/refreshImageView"
@@ -188,7 +191,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:onClick="refreshOnClick"
         app:layout_constraintBottom_toTopOf="@+id/locationValue"
         app:layout_constraintEnd_toEndOf="parent"
