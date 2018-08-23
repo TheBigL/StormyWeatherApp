@@ -24,7 +24,7 @@ public class HourlyForecastActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        List<Hour> hoursList = (ArrayList<Hour>) intent.getSerializableExtra("HourlyList");
+        List<Hour> hoursList = (ArrayList<Hour>) intent.getSerializableExtra("hourlyList");
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_hourly_forecast);
 

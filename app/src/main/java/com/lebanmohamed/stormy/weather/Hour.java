@@ -30,7 +30,7 @@ public class Hour implements Serializable
 
     public String getTime()
     {
-        SimpleDateFormat formatter = new SimpleDateFormat("H:MM A");
+        SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
         formatter.setTimeZone(TimeZone.getTimeZone(timezone));
 
         Date dateTime  = new Date(time * 1000);
@@ -74,6 +74,8 @@ public class Hour implements Serializable
     public void setTimezone(String timezone) {
         this.timezone = timezone;
     }
+
+
 
 
 }

@@ -40,17 +40,16 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "TAG";
-    Forecast forecast;
+    private Forecast forecast;
     double latitude = 53.631611;
     double longitude = -113.323975;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getForecast(latitude, longitude);
-
-
 
 
     }
@@ -70,11 +69,10 @@ public class MainActivity extends AppCompatActivity {
         String apiKey = "23e4048bbc3f485cd62e9933f3c93e6c";
 
 
-
         //Getting the String URL
         String URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + "," + longitude;
 
-        if(isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
 
             OkHttpClient client = new OkHttpClient();
 
@@ -83,8 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
             call.enqueue(new Callback() {
                 @Override
-                public void onFailure(Call call, IOException e)
-                {
+                public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
 
 
@@ -114,11 +111,9 @@ public class MainActivity extends AppCompatActivity {
                             binding.setWeather(current);
                             iconImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), displayWeather.getIconByID(), null));
 
-                           runOnUiThread(new Runnable()
-                           {
-                               @Override
-                               public void run()
-                                {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
                                     Drawable drawable = ResourcesCompat.getDrawable(getResources(), current.getIconByID(), null);
 
                                     iconImageView.setImageDrawable(drawable);
@@ -129,8 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }
 
-                    } catch (IOException e)
-                    {
+                    } catch (IOException e) {
                         alertUserError();
 
                     } catch (JSONException e) {
@@ -144,11 +138,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Forecast parseForecastData(String jsonData) throws JSONException
-    {
+    private Forecast parseForecastData(String jsonData) throws JSONException {
         Forecast forecast = new Forecast();
 
         forecast.setCurrent(getCurrentDetails(jsonData));
+        forecast.setHourlyForecast(getHourlyForecast(jsonData));
 
         return forecast;
     }
@@ -158,19 +152,19 @@ public class MainActivity extends AppCompatActivity {
         String timezone = forecast.getString("timezone");
 
         JSONObject hourly = forecast.getJSONObject("hourly");
-        JSONArray data = forecast.getJSONArray("data");
+        JSONArray data = hourly.getJSONArray("data");
 
         Hour[] hours = new Hour[data.length()];
 
-        for(int i = 0; i < data.length(); i++)
-        {
+        for (int i = 0; i < data.length(); i++) {
             JSONObject jsonHour = data.getJSONObject(i);
 
             Hour hour = new Hour();
 
-            hour.setSummary(jsonHour.getString("summay"));
+            hour.setSummary(jsonHour.getString("summary"));
             hour.setTime(jsonHour.getLong("time"));
             hour.setTemperature(jsonHour.getDouble("temperature"));
+            hour.setIcon(jsonHour.getString("icon"));
             hour.setTimezone(timezone);
 
             hours[i] = hour;
@@ -202,47 +196,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private boolean isNetworkAvailable()
-    {
+    private boolean isNetworkAvailable() {
         ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
 
         boolean isConnected = false;
 
-        if(networkInfo != null && networkInfo.isConnected())
-        {
+        if (networkInfo != null && networkInfo.isConnected()) {
             return true;
-        }
-
-        else
-        {
+        } else {
             Toast.makeText(this, R.string.network_not_available_message, Toast.LENGTH_SHORT).show();
         }
 
         return isConnected;
     }
 
-    private void alertUserError()
-    {
+    private void alertUserError() {
         AlertDialogFragment dialog = new AlertDialogFragment();
         dialog.show(getFragmentManager(), "error_dialog");
 
 
     }
 
-    public void refreshOnClick(View view)
-    {
-        Toast.makeText(this, "Refreshing Info...", Toast.LENGTH_SHORT).show();
-        getForecast(latitude, longitude);
-        Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
-
-    }
-
-    public void hourlyOnClick(View view)
-    {
+    public void hourlyOnClick(View view) {
         List<Hour> hours = Arrays.asList(forecast.getHourlyForecast());
         Intent intent = new Intent(this, HourlyForecastActivity.class);
-        intent.putExtra("HourlyList", (Serializable) hours);
+        intent.putExtra("hourlyList", (Serializable) hours);
         startActivity(intent);
     }
 }
+
+
+
+
