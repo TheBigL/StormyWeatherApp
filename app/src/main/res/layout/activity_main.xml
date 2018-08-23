@@ -40,7 +40,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@{String.valueOf(Math.round(weather.temperature)), default=`34`}"
+        android:text="@{String.valueOf(Math.round(weather.temperature)), default=`N/A`}"
         android:textColor="@android:color/white"
         android:textSize="150sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -121,7 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="@{String.valueOf(Math.round(weather.humidity)) + `%`}"
+        android:text="@{String.valueOf(Math.round(weather.humidity)) + `%`, default=`N/A`}"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/humidityLabel"
@@ -147,7 +147,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@{String.valueOf(weather.precipChance * 100)}"
+        android:text="@{String.valueOf(weather.precipChance * 100), default=`N/A`}"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/precipLabel"
@@ -158,31 +158,26 @@
         android:id="@+id/summaryValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@{weather.summary}"
+        android:layout_marginTop="32dp"
+        android:text="@{weather.summary, default=`N/A`}"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PrecipValue" />
+        app:layout_constraintTop_toTopOf="@+id/humidityValue" />
 
     <TextView
         android:id="@+id/darkSkyAttribution"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/dark_sky_message"
         android:textColor="@android:color/white"
         android:textColorLink="?attr/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/summaryValue"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/refreshImageView"
@@ -191,13 +186,32 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:onClick="refreshOnClick"
         app:layout_constraintBottom_toTopOf="@+id/locationValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/darkSkyAttribution"
+        app:layout_constraintVertical_bias="0.777"
         app:srcCompat="@drawable/refresh" />
+
+    <Button
+        android:id="@+id/hourlyForecastButton"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:height="25dp"
+        android:background="@android:color/holo_blue_bright"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="Get Hourly Forecast"
+        android:textColor="@android:color/white"
+        android:onClick="hourlyOnClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/summaryValue" />
 
 </android.support.constraint.ConstraintLayout>
 </layout>

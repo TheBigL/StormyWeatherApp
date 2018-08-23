@@ -1,6 +1,7 @@
 package com.lebanmohamed.stormy.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -232,5 +233,11 @@ public class MainActivity extends AppCompatActivity {
         getForecast(latitude, longitude);
         Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
 
+    }
+
+    public void hourlyOnClick(View view)
+    {
+        Intent intent = new Intent(this, HourlyForecastActivity.class);
+        startActivity(intent);
     }
 }
