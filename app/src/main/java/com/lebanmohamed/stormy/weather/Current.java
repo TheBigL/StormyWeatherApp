@@ -1,8 +1,6 @@
 package com.lebanmohamed.stormy.weather;
 
 
-import com.lebanmohamed.stormy.R;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -115,38 +113,7 @@ public class Current {
 
     public int getIconByID()
     {
-        int iconID = R.drawable.clear_day;
-
-        switch (icon)
-        {
-            case "rain":
-                iconID = R.drawable.rain;
-                break;
-            case "snow":
-                iconID = R.drawable.snow;
-                break;
-            case "sleet":
-                iconID = R.drawable.sleet;
-                break;
-            case "wind":
-                iconID = R.drawable.wind;
-                break;
-            case "fog":
-                iconID = R.drawable.fog;
-                break;
-            case "cloudy":
-                iconID = R.drawable.cloudy;
-                break;
-            case "partly-cloudy-day":
-                iconID = R.drawable.partly_cloudy;
-                break;
-            case "partly-cloudy-night":
-                iconID = R.drawable.cloudy_night;
-                break;
-        }
-
-        return iconID;
-
+        return Forecast.getIconID(icon);
     }
 
 

@@ -31,14 +31,15 @@ public class HourlyAdapter extends RecyclerView.Adapter<HourlyAdapter.ViewHolder
     @Override
     public HourlyAdapter.ViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType)
     {
-        HourlyListItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.hourly_list_item, parent, false);
+        HourlyListItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.hourly_list_item, parent, false);
 
 
         return new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
     {
         Hour hour = hours.get(position);
         holder.hourlyListItemBinding.setHour(hour);
@@ -57,10 +58,10 @@ public class HourlyAdapter extends RecyclerView.Adapter<HourlyAdapter.ViewHolder
         public HourlyListItemBinding hourlyListItemBinding;
 
 
-        public ViewHolder()
+        public ViewHolder(HourlyListItemBinding hourlyLayoutBinding)
         {
-            super(hourlyLayoutItemBinding.getRoot());
-            hourlyListItemBinding = hourlyLayoutItemBinding;
+            super(hourlyLayoutBinding.getRoot());
+            hourlyListItemBinding = hourlyLayoutBinding;
         }
     }
 }

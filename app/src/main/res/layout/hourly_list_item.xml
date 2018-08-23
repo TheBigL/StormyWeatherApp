@@ -24,8 +24,7 @@
             android:layout_centerVertical="true"
             android:text="@{String.valueOf(hour.time)}"
             android:textColor="@android:color/white"
-            android:textSize="24sp"
-            tools:text="N/A"/>
+            android:textSize="24sp"/>
 
         <ImageView
             android:id="@+id/iconImageView"
@@ -35,9 +34,9 @@
             android:layout_toEndOf="@id/timeLabel"
             android:layout_toRightOf="@id/timeLabel"
             android:textColor="@android:color/white"
+            app:imageResource="@{hour.icon}"
             android:textSize="24sp"
-            app:srcCompat="@drawable/partly_cloudy"
-            android:text="@{hour.icon}"/>
+            app:srcCompat="@drawable/partly_cloudy"/>
 
         <TextView
             android:id="@+id/summaryLabel"
@@ -52,7 +51,7 @@
             android:paddingRight="15dp"
             android:textColor="@android:color/white"
             android:textSize="24sp"
-            android:text="@{hour.summary}"
+            android:text="@{String.valueOf(hour.summary)}"
             tools:text="N/A"/>
 
         <TextView

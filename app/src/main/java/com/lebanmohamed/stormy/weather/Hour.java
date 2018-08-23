@@ -1,6 +1,12 @@
 package com.lebanmohamed.stormy.weather;
 
-public class Hour
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.TimeZone;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class Hour implements Serializable
 {
     private long time;
     private  String summary;
@@ -8,9 +14,30 @@ public class Hour
     private String icon;
     private String timezone;
 
-    public long getTime() {
-        return time;
+    public Hour()
+    {
+
     }
+
+    public Hour(long time, String summary, double temperature, String icon, String timezone)
+    {
+        this.time = time;
+        this.summary = summary;
+        this.temperature = temperature;
+        this.icon = icon;
+        this.timezone = timezone;
+    }
+
+    public String getTime()
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat("H:MM A");
+        formatter.setTimeZone(TimeZone.getTimeZone(timezone));
+
+        Date dateTime  = new Date(time * 1000);
+        return formatter.format(dateTime);
+
+    }
+
 
     public void setTime(long time) {
         this.time = time;
@@ -24,16 +51,16 @@ public class Hour
         this.summary = summary;
     }
 
-    public double getTemperature() {
-        return temperature;
+    public int getTemperature() {
+        return Math.round((int) temperature);
     }
 
     public void setTemperature(double temperature) {
         this.temperature = temperature;
     }
 
-    public String getIcon() {
-        return icon;
+    public int getIcon() {
+        return Forecast.getIconID(icon);
     }
 
     public void setIcon(String icon) {
@@ -47,4 +74,6 @@ public class Hour
     public void setTimezone(String timezone) {
         this.timezone = timezone;
     }
+
+
 }

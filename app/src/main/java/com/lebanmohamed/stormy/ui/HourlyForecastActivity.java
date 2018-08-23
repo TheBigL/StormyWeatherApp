@@ -1,32 +1,44 @@
 package com.lebanmohamed.stormy.ui;
 
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.support.v7.widget.LinearLayoutManager;
 
 import com.lebanmohamed.stormy.R;
+import com.lebanmohamed.stormy.adapter.HourlyAdapter;
+import com.lebanmohamed.stormy.databinding.ActivityHourlyForecastBinding;
+import com.lebanmohamed.stormy.weather.Hour;
 
-public class HourlyForecastActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class HourlyForecastActivity extends AppCompatActivity
+{
+
+    private ActivityHourlyForecastBinding binding;
+    private HourlyAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hourly_forecast);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Intent intent = getIntent();
+        List<Hour> hoursList = (ArrayList<Hour>) intent.getSerializableExtra("HourlyList");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_hourly_forecast);
+
+        adapter = new HourlyAdapter(hoursList, this);
+
+
+        binding.hourlyListItems.setAdapter(adapter);
+        binding.hourlyListItems.setHasFixedSize(true);
+        binding.hourlyListItems.setLayoutManager(new LinearLayoutManager(this));
+
+
+
+
+
     }
 
 }
