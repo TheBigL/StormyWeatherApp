@@ -19,6 +19,7 @@ public class HourlyForecastActivity extends AppCompatActivity
 
     private ActivityHourlyForecastBinding binding;
     private HourlyAdapter adapter;
+    //TODO: Add location based on city
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
