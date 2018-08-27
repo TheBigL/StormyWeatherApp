@@ -13,5 +13,14 @@
     tools:context=".ui.HourlyForecastActivity"
     tools:showIn="@layout/activity_hourly_forecast">
 
+    <RelativeLayout
+        android:id="@+id/hourlyListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        contentPaddingBottom="8dp"
+        tools:background="@color/appBackground">
+
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
 </layout>

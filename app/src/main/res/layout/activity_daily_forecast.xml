@@ -14,6 +14,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.DailyForecastActivity">
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_daily_forecast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <include layout="@layout/content_daily_forecast" />
 

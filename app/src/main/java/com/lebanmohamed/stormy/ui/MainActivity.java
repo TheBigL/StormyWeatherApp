@@ -224,6 +224,14 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("hourlyList", (Serializable) hours);
         startActivity(intent);
     }
+
+    public void dailyOnClick(View view)
+    {
+        Intent intent = new Intent(this, DailyForecastActivity.class);
+
+        startActivity(intent);
+    }
+
 }
 
 

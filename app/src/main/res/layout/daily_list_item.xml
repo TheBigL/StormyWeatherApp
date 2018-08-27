@@ -2,10 +2,70 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="day"
+            type="com.lebanmohamed.stormy.weather.Day"/>
+    </data>
 
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
+    android:id="@+id/dailyListView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:background="@color/appBackground">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/dayLabel"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:text="@{String.valueOf(day.time)}"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        tools:Text="Today"/>
+
+    <ImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/dayLabel"
+        android:layout_toEndOf="@id/dayLabel"
+        app:imageResource="@{day.icon}"
+        android:textSize="24sp"
+        app:srcCompat="@drawable/cloudy" />
+
+    <TextView
+        android:id="@+id/summaryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentTop="false"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/iconImageView"
+        android:layout_toEndOf="@id/iconImageView"
+        android:textColor="@android:color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textSize="24sp"
+        android:text="@{String.valueOf(day.summary)}"
+        tools:text="N/A"/>
+
+    <TextView
+        android:id="@+id/temperatureLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:text="@{String.valueOf(day.temperature)}"
+        tools:Text="50"/>
+
+
+</RelativeLayout>
 </layout>
