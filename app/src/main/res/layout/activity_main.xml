@@ -210,28 +210,47 @@
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.142"
+        app:layout_constraintHorizontal_bias="0.133"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/summaryValue"
-        app:layout_constraintVertical_bias="0.405" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/dailyForecastButton"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="52dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/holo_blue_bright"
+        android:onClick="dailyOnClick"
         android:text="Get Daily Forecast"
         android:textColor="@android:color/white"
-        android:onClick="dailyOnClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.727"
         app:layout_constraintStart_toEndOf="@+id/hourlyForecastButton"
+        app:layout_constraintTop_toBottomOf="@+id/summaryValue" />
+
+    <Button
+        android:id="@+id/convertTo"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/holo_blue_bright"
+        android:text="Convert"
+        android:textColor="@android:color/white"
+        android:onClick="convertOnClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/summaryValue"
-        app:layout_constraintVertical_bias="0.189" />
+        app:layout_constraintVertical_bias="0.619" />
 
 </android.support.constraint.ConstraintLayout>
 </layout>

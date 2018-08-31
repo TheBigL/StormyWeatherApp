@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.lebanmohamed.stormy.R;
 import com.lebanmohamed.stormy.databinding.ActivityMainBinding;
 import com.lebanmohamed.stormy.weather.Current;
+import com.lebanmohamed.stormy.weather.Day;
 import com.lebanmohamed.stormy.weather.Forecast;
 import com.lebanmohamed.stormy.weather.Hour;
 
@@ -43,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private Forecast forecast;
     double latitude = 53.631611;
     double longitude = -113.323975;
+    boolean toCelsius = false;
+    String URL;
+
 
 
     @Override
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getForecast(latitude, longitude);
+
 
 
     }
@@ -66,11 +71,21 @@ public class MainActivity extends AppCompatActivity {
 
         iconImageView = findViewById(R.id.iconImageView);
 
+
         String apiKey = "23e4048bbc3f485cd62e9933f3c93e6c";
 
 
         //Getting the String URL
-        String URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + "," + longitude;
+        URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + "," + longitude;
+
+        if(toCelsius)
+        {
+            URL += "units?si";
+        }
+
+
+
+
 
         if (isNetworkAvailable()) {
 
@@ -95,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                             forecast = parseForecastData(JSONdata);
 
                             final Current current = forecast.getCurrent();
+
 
                             final Current displayWeather = new Current
                                     (
@@ -125,10 +141,10 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     } catch (IOException e) {
-                        alertUserError();
+                        e.printStackTrace();
 
                     } catch (JSONException e) {
-                        alertUserError();
+                        e.printStackTrace();
 
                     }
 
@@ -143,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
 
         forecast.setCurrent(getCurrentDetails(jsonData));
         forecast.setHourlyForecast(getHourlyForecast(jsonData));
+        forecast.setDailyForecast(getDailyForecast(jsonData));
+
 
         return forecast;
     }
@@ -163,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
             hour.setSummary(jsonHour.getString("summary"));
             hour.setTime(jsonHour.getLong("time"));
-            hour.setTemperature(jsonHour.getDouble("temperature"));
+            hour.setTemperature(Math.round(jsonHour.getDouble("temperature")));
             hour.setIcon(jsonHour.getString("icon"));
             hour.setTimezone(timezone);
 
@@ -172,6 +190,40 @@ public class MainActivity extends AppCompatActivity {
 
         return hours;
 
+    }
+
+
+    private JSONObject createJSONObject(String JSONData) throws JSONException
+    {
+        return new JSONObject(JSONData);
+    }
+
+    private  Day[] getDailyForecast(String JSONData) throws JSONException
+    {
+        JSONObject forecast = createJSONObject(JSONData);
+        String timeZone = forecast.getString("timezone");
+
+        JSONObject daily = forecast.getJSONObject("daily");
+        JSONArray data = daily.getJSONArray("data");
+
+        Day[] days = new Day[data.length()];
+
+        for(int i = 0; i < data.length(); i++)
+        {
+            JSONObject jsonDay = data.getJSONObject(i);
+
+            Day day = new Day();
+
+            day.setSummary(jsonDay.getString("summary"));
+            day.setTime(jsonDay.getLong("time"));
+            day.setIcon(jsonDay.getString("icon"));
+            day.setTemperature(jsonDay.getDouble("temperatureMin") + jsonDay.getDouble("temperatureMax") / 2);
+            day.setTimezone(timeZone);
+
+            days[i] = day;
+        }
+
+        return days;
     }
 
     private Current getCurrentDetails(String jsonData) throws JSONException {
@@ -183,11 +235,11 @@ public class MainActivity extends AppCompatActivity {
         JSONObject currently = forecast.getJSONObject("currently");
         Current current = new Current();
 
-        current.setHumidity(currently.getDouble("humidity") * 100);
+        current.setHumidity(currently.getDouble("humidity") / 100);
         current.setTime(currently.getLong("time"));
         current.setIcon(currently.getString("icon"));
         current.setLocationLabel("Edmonton, AB");
-        current.setPrecipChance(currently.getDouble("precipProbability") * 100);
+        current.setPrecipChance(currently.getDouble("precipProbability") / 100);
         current.setSummary(currently.getString("summary"));
         current.setTemperature(Math.round(currently.getDouble("temperature")));
         current.setTimezone(timezone);
@@ -218,6 +270,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void refreshOnClick(View view)
+    {
+        getForecast(latitude, longitude);
+    }
+
     public void hourlyOnClick(View view) {
         List<Hour> hours = Arrays.asList(forecast.getHourlyForecast());
         Intent intent = new Intent(this, HourlyForecastActivity.class);
@@ -227,9 +284,28 @@ public class MainActivity extends AppCompatActivity {
 
     public void dailyOnClick(View view)
     {
+        List<Day> days = Arrays.asList(forecast.getDailyForecast());
         Intent intent = new Intent(this, DailyForecastActivity.class);
-
+        intent.putExtra("dailyList", (Serializable) days);
         startActivity(intent);
+    }
+
+    public void convertOnClick(View view)
+    {
+        if(!toCelsius)
+        {
+            toCelsius = true;
+            Toast.makeText(this, "Converted to Celsius", Toast.LENGTH_SHORT);
+            getForecast(latitude, longitude);
+        }
+
+        else
+        {
+            toCelsius = false;
+            Toast.makeText(this, "Converted to Farenheit", Toast.LENGTH_SHORT);
+            getForecast(latitude, longitude);
+        }
+
     }
 
 }

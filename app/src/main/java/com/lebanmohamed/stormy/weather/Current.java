@@ -116,6 +116,10 @@ public class Current {
         return Forecast.getIconID(icon);
     }
 
+    public double getTemperatureByCelsius() {
+        return temperature -32*(.5556);
+    }
+
 
 
 }

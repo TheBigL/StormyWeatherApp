@@ -6,6 +6,7 @@ public class Forecast
 {
     private Current current;
     private Hour[] hourlyForecast;
+    private Day[] dailyForecast;
 
     public Current getCurrent() {
         return current;
@@ -21,6 +22,14 @@ public class Forecast
 
     public void setHourlyForecast(Hour[] hourlyForecast) {
         this.hourlyForecast = hourlyForecast;
+    }
+
+    public Day[] getDailyForecast() {
+        return dailyForecast;
+    }
+
+    public void setDailyForecast(Day[] dailyForecast) {
+        this.dailyForecast = dailyForecast;
     }
 
     public static int getIconID(String icon)

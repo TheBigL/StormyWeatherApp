@@ -1,10 +1,11 @@
 package com.lebanmohamed.stormy.weather;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class Day
+public class Day implements Serializable
 {
     private long time;
     private  String summary;
