@@ -1,12 +1,21 @@
 package com.lebanmohamed.stormy.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
@@ -16,6 +25,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.lebanmohamed.stormy.R;
 import com.lebanmohamed.stormy.databinding.ActivityMainBinding;
 import com.lebanmohamed.stormy.weather.Current;
@@ -31,6 +45,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -38,26 +53,41 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks {
+
+    private static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 101;
+    private static final int MY_PERMISSION_REQUEST_COARSE_LOCATION = 102;
+
+
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationManager locationManager;
+    public LocationRequest locationRequest;
+    public GoogleApiClient apiClient;
+    private Task<Location> currentLocation;
+
 
     private static final String TAG = "TAG";
+    public static final int PRIORITY_BALANCED_POWER_ACCURACY = 102;
+    private boolean permission = false;
     private Forecast forecast;
-    double latitude = 53.631611;
-    double longitude = -113.323975;
+    private double latitude = 53.631611;
+    private double longitude = -113.323975;
     boolean toCelsius = false;
+
     String URL;
 
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
+
         getForecast(latitude, longitude);
-
-
-
     }
+
+
+
 
     private void getForecast(double latitude, double longitude) {
         final ActivityMainBinding binding = DataBindingUtil.setContentView(MainActivity.this, R.layout.activity_main);
@@ -78,13 +108,9 @@ public class MainActivity extends AppCompatActivity {
         //Getting the String URL
         URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + "," + longitude;
 
-        if(toCelsius)
-        {
-            URL += "units?si";
+        if (toCelsius) {
+            URL += "?units=si";
         }
-
-
-
 
 
         if (isNetworkAvailable()) {
@@ -141,10 +167,10 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        alertUserError();
 
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        JSONUserERROR();
 
                     }
 
@@ -193,13 +219,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private JSONObject createJSONObject(String JSONData) throws JSONException
-    {
+    private JSONObject createJSONObject(String JSONData) throws JSONException {
         return new JSONObject(JSONData);
     }
 
-    private  Day[] getDailyForecast(String JSONData) throws JSONException
-    {
+    private Day[] getDailyForecast(String JSONData) throws JSONException {
         JSONObject forecast = createJSONObject(JSONData);
         String timeZone = forecast.getString("timezone");
 
@@ -208,8 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
         Day[] days = new Day[data.length()];
 
-        for(int i = 0; i < data.length(); i++)
-        {
+        for (int i = 0; i < data.length(); i++) {
             JSONObject jsonDay = data.getJSONObject(i);
 
             Day day = new Day();
@@ -263,6 +286,10 @@ public class MainActivity extends AppCompatActivity {
         return isConnected;
     }
 
+    protected void M() {
+
+    }
+
     private void alertUserError() {
         AlertDialogFragment dialog = new AlertDialogFragment();
         dialog.show(getFragmentManager(), "error_dialog");
@@ -270,8 +297,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void refreshOnClick(View view)
-    {
+    private void JSONUserERROR() {
+        AlertDialogFragment dialog = new AlertDialogFragment();
+        dialog.show(getFragmentManager(), "We've got a JSON exception over here! Give a shout to the us, we'll take care of the rest.");
+    }
+
+    public void refreshOnClick(View view) {
         getForecast(latitude, longitude);
     }
 
@@ -282,32 +313,99 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void dailyOnClick(View view)
-    {
+    public void dailyOnClick(View view) {
         List<Day> days = Arrays.asList(forecast.getDailyForecast());
         Intent intent = new Intent(this, DailyForecastActivity.class);
         intent.putExtra("dailyList", (Serializable) days);
         startActivity(intent);
     }
 
-    public void convertOnClick(View view)
-    {
-        if(!toCelsius)
-        {
+    public void convertOnClick(View view) {
+        if (!toCelsius) {
             toCelsius = true;
+            getForecast(latitude, longitude);
             Toast.makeText(this, "Converted to Celsius", Toast.LENGTH_SHORT);
-            getForecast(latitude, longitude);
-        }
-
-        else
-        {
+        } else {
             toCelsius = false;
-            Toast.makeText(this, "Converted to Farenheit", Toast.LENGTH_SHORT);
             getForecast(latitude, longitude);
+            Toast.makeText(this, "Converted to Farenheit", Toast.LENGTH_SHORT);
         }
 
     }
 
+
+
+
+    public void buildNoGPSAlertMessage() {
+        AlertDialogFragment dialog = new AlertDialogFragment();
+        dialog.show(getFragmentManager(), "We don't have GPS permission to use this application");
+
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider)
+    {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Geocoder gcd = new Geocoder(this, Locale.getDefault());
+        if (Build.VERSION.SDK_INT > 23)
+        {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}, 101);
+                return;
+            }
+            currentLocation = mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if(location != null)
+                    {
+                        longitude = location.getLongitude();
+                        latitude = location.getLatitude();
+                        getForecast(latitude, longitude);
+                    }
+
+                    else
+                    {
+                        Toast.makeText(MainActivity.this, "Sorry, we couldn't get the location.", Toast.LENGTH_LONG).show();
+                        latitude = 53.631611;
+                        longitude = -113.323975;
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
 }
 
 
