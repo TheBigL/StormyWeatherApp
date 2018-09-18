@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     private Forecast forecast;
     private double latitude = 53.631611;
     private double longitude = -113.323975;
-    boolean toCelsius = false;
+    boolean toCelsius = true;
 
     String URL;
 
@@ -102,14 +102,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         iconImageView = findViewById(R.id.iconImageView);
 
 
-        String apiKey = "23e4048bbc3f485cd62e9933f3c93e6c";
+        String apiKey = "23e4048bbc3f485cd62e9933f3c93e6c?units=si";
 
 
         //Getting the String URL
         URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + "," + longitude;
 
-        if (toCelsius) {
-            URL += "?units=si";
+        if (!toCelsius) {
+            URL += "23e4048bbc3f485cd62e9933f3c93e6c";
         }
 
 
