@@ -122,10 +122,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
             call.enqueue(new Callback() {
                 @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-
-
+                public void onFailure(Call call, IOException e)
+                {
+                    internetConnectionError();
                 }
 
                 @Override
@@ -286,15 +285,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         return isConnected;
     }
 
-    protected void M() {
-
-    }
-
-    private void alertUserError() {
+    private void alertUserError()
+    {
         AlertDialogFragment dialog = new AlertDialogFragment();
         dialog.show(getFragmentManager(), "error_dialog");
+    }
 
-
+    private void internetConnectionError()
+    {
+        AlertDialogFragment dialog = new AlertDialogFragment();
+        dialog.show(getFragmentManager(), "Sorry, but your connection is in another castle! Try again when you've got a stronger connection...");
     }
 
     private void JSONUserERROR() {
