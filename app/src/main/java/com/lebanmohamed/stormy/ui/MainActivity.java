@@ -102,14 +102,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         iconImageView = findViewById(R.id.iconImageView);
 
 
-        String apiKey = "23e4048bbc3f485cd62e9933f3c93e6c?units=si";
+        String apiKey = "23e4048bbc3f485cd62e9933f3c93e6c";
 
 
         //Getting the String URL
-        URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + "," + longitude;
+        URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + "," + longitude + "?units=si";
 
         if (!toCelsius) {
-            URL += "23e4048bbc3f485cd62e9933f3c93e6c";
+            URL = "23e4048bbc3f485cd62e9933f3c93e6c" + apiKey + "/" + latitude + "," + longitude;
         }
 
 
