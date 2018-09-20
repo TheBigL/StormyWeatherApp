@@ -19,7 +19,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     private Task<Location> currentLocation;
 
 
-    private static final String TAG = "TAG";
+
     public static final int PRIORITY_BALANCED_POWER_ACCURACY = 102;
     private boolean permission = false;
     private Forecast forecast;
@@ -108,8 +107,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         //Getting the String URL
         URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + "," + longitude + "?units=si";
 
-        if (!toCelsius) {
-            URL = "23e4048bbc3f485cd62e9933f3c93e6c" + apiKey + "/" + latitude + "," + longitude;
+        if (!toCelsius)
+        {
+            URL = "https://api.darksky.net/forecast/" + apiKey + "/" + latitude + "," + longitude;
         }
 
 
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         JSONObject forecast = new JSONObject(jsonData);
 
         String timezone = forecast.getString("timezone");
-        Log.i(TAG, "JSON Data: " + jsonData);
+
 
         JSONObject currently = forecast.getJSONObject("currently");
         Current current = new Current();
