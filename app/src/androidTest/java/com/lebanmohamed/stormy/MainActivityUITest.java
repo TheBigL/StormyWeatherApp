@@ -19,6 +19,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityUITest
 {
+
+
+    //Note that I did not add Unit Tests because I
     @Rule
     public ActivityTestRule<MainActivity> mainActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -26,6 +29,25 @@ public class MainActivityUITest
     public void CurrentDataNotNull() throws Exception
     {
         onView(withId(R.id.temperatureValue)).check(matches(notNullValue()));
+    }
+
+    @Test
+    public void PrecipDataNotNull() throws Exception
+    {
+        onView(withId(R.id.PrecipValue)).check(matches(notNullValue()));
+    }
+    @Test
+    public void Check7thDayWeather()
+    {
+        onView(withId(R.id.dailyForecastButton)).perform(click());
+
+
+    }
+
+    @Test
+    public void HumidityDataNotNull() throws Exception
+    {
+        onView(withId(R.id.humidityValue)).check(matches(notNullValue()));
     }
 
     @Test
