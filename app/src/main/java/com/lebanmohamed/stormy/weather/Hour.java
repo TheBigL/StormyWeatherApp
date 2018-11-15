@@ -33,7 +33,7 @@ public class Hour implements Serializable
         SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
         formatter.setTimeZone(TimeZone.getTimeZone(timezone));
 
-        Date dateTime  = new Date(time);
+        Date dateTime  = new Date(time * 1000);
         return formatter.format(dateTime);
 
     }
