@@ -21,7 +21,7 @@ public class MainActivityUITest
 {
 
 
-    //Note that I did not add Unit Tests because I
+    //Note that I did not add Unit Tests because of the nature of the application
     @Rule
     public ActivityTestRule<MainActivity> mainActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
